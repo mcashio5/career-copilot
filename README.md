@@ -9,8 +9,6 @@ GitHub editor, or commit it to a docs/ folder.)
 
 ## How it works
 
-## How it works
-
 ```text
 User uploads a resume PDF and pastes a job description
                          ↓
