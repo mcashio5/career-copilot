@@ -1,11 +1,16 @@
 # Career Copilot
 
-Career Copilot is a locally hosted web application that helps job seekers evaluate how well their resume matches a specific job posting. Users upload a resume in PDF format and paste a job description into the application. A FastAPI backend extracts the resume text and securely sends both inputs to Claude AI for analysis. The application then returns a structured evaluation including an overall match score, matching and missing skills, resume improvement suggestions, interview questions, a personalized cover letter draft, and a recommended study plan through a modern React dashboard.
+Career Copilot is a locally hosted web application that helps job seekers evaluate how well their resume matches a specific job posting. Users upload a resume in PDF format and paste a job description into the application. A FastAPI backend extracts the resume text and sends both inputs to Claude AI for analysis. The application then returns a structured evaluation including an overall match score, matching and missing skills, resume improvement suggestions, interview questions, a personalized cover letter draft, and a recommended study plan through a modern React dashboard.
 
 ## Demo
 
-(Screenshot of the dashboard with real results — drag the image into the
-GitHub editor, or commit it to a docs/ folder.)
+### Landing Page
+
+![Landing Page](docs/landing-page.png)
+
+### Completed Analysis
+
+![Analysis Results](docs/analysis-results.png)
 
 ## How it works
 
@@ -61,7 +66,6 @@ cd backend
 python -m venv venv
 source venv/bin/activate      # macOS/Linux
 pip install -r requirements.txt
-cp .env.example .env
 ```
 
 Create a `.env` file inside the backend directory:
