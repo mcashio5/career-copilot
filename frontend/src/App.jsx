@@ -37,24 +37,28 @@ function App() {
     formData.append("resume", file);
     formData.append("job_description", jobDescription);
 
-    try {
+      try {
       const response = await fetch(`${API_URL}/api/analyze`, {
         method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
-        const responseData = await response.json();
-        const detail = responseData.detail ?? "Analysis failed.";
+        const data = await response.json();
+        const detail = data.detail ?? "Analysis failed.";
         throw new Error(detail);
       }
 
-      const responseData = await response.json();
-
-      setResult(responseData);
+      const data = await response.json();
+      setResult(data);
       setStatus("done");
     } catch (err) {
-      setError(err.message);
+      if (err instanceof TypeError) {
+        setError("Can't reach the analysis server — is the backend running?");
+      } else {
+        setError(err.message || "Something went wrong during analysis.");
+      }
+
       setStatus("error");
     }
   }
