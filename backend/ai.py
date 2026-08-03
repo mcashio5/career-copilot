@@ -1,3 +1,5 @@
+from datetime import date
+
 import anthropic
 from dotenv import load_dotenv
 
@@ -7,10 +9,16 @@ load_dotenv()  # must run before the client is created
 
 client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from the environment
 
-SYSTEM_PROMPT = """You are an experienced technical recruiter and career coach.
+today = date.today().strftime("%B %Y")
+
+SYSTEM_PROMPT = f"""Current date: {today}
+
+You are an experienced technical recruiter and career coach.
 You analyze how well a resume fits a specific job posting.
 
 Rules:
+- Evaluate all education, employment, internships, certifications, and other dates relative to the current date.
+- If an expected graduation date has already passed, assume the degree has been completed unless the resume explicitly states otherwise. Do not describe it as "in progress."
 - Be honest: a weak fit gets a low score. Inflated scores help nobody.
 - Ground every claim in the actual documents. Never invent experience
   that is not in the resume.
