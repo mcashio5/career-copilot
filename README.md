@@ -9,15 +9,32 @@ GitHub editor, or commit it to a docs/ folder.)
 
 ## How it works
 
-User uploads a PDF resume and pastes a job description -> React frontend packages both inputs using FormData -> FastAPI receives the request -> PyPDF extracts the resume text -> Claude AI compares the resume against the job posting -> Structured JSON response -> React renders an interactive dashboard displaying:
+## How it works
 
-- Match Score
-- Matching Skills
-- Missing Skills
-- Resume Suggestions 
-- Interview Questions
-- Cover Letter Draft
-- Study Plan
+```text
+User uploads a resume PDF and pastes a job description
+                         ↓
+React packages both inputs as multipart FormData
+                         ↓
+FastAPI receives and validates the request
+                         ↓
+PyPDF extracts text from the resume
+                         ↓
+Claude analyzes the resume against the job description
+                         ↓
+Pydantic validates the structured JSON response
+                         ↓
+React renders the results dashboard
+```
+
+The dashboard displays:
+
+- Match score and summary
+- Matching and missing skills
+- Resume improvement suggestions
+- Likely interview questions
+- Cover letter draft
+- Personalized study plan
 
 ## Stack
 
@@ -27,7 +44,7 @@ User uploads a PDF resume and pastes a job description -> React frontend package
 - Anthropic SDK (claude-opus-5)
 - React 18
 - Vite
--JavaScript
+- JavaScript
 - HTML/CSS
 
 ## Running locally
@@ -35,8 +52,8 @@ User uploads a PDF resume and pastes a job description -> React frontend package
 ### Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/CareerCopilot.git
-cd CareerCopilot
+git clone https://github.com/mcashio5/career-copilot.git
+cd career-copilot
 ```
 
 ### Backend
@@ -46,6 +63,7 @@ cd backend
 python -m venv venv
 source venv/bin/activate      # macOS/Linux
 pip install -r requirements.txt
+cp .env.example .env
 ```
 
 Create a `.env` file inside the backend directory:
