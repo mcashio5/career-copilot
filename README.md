@@ -4,6 +4,10 @@ Career Copilot is a locally hosted web application that helps job seekers evalua
 
 ## Demo
 
+### Live Demo
+
+https://careercopilot.automateio.io
+
 ### Landing Page
 
 ![Landing Page](docs/landing-page.png)
@@ -114,3 +118,5 @@ http://localhost:5173
 - Add Retrieval-Augmented Generation (RAG) for personalized resume recommendations
 - Stream AI responses to display results as they are generated
 - User authentication and saved analysis history
+- Per-IP rate limiting
+- User authentication before public production release
