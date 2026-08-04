@@ -1,6 +1,7 @@
 import os
+import secrets
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, Header, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pypdf import PdfReader
@@ -17,6 +18,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def check_access(key: str | None):
+    expected = os.environ.get("APP_PASSWORD")
+    if not expected:
+        return
+    if key is None or not secrets.compare_digest(key, expected):
+        raise HTTPException(status_code=401, detail="Invalid access key.")
+
 
 @app.get("/api/health")
 def health():
@@ -27,7 +35,10 @@ def health():
 async def analyze_resume(
     resume: UploadFile = File(...),
     job_description: str = Form(...),
+    x_access_key: str | None = Header(default=None),
 ):
+    check_access(x_access_key)
+
     if resume.content_type != "application/pdf":
         raise HTTPException(
             status_code=400,
@@ -55,4 +66,4 @@ async def analyze_resume(
     return analyze(resume_text, job_description)
 
 if os.path.isdir("static"):
-        app.mount("/", StaticFiles(directory="static", html=True), name="static")
+    app.mount("/", StaticFiles(directory="static", html=True), name="static")

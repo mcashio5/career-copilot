@@ -7,6 +7,11 @@ function App() {
   // Data entered into the job-description box
   const [jobDescription, setJobDescription] = useState("");
 
+  // Shared password used to access the app
+  const [accessKey, setAccessKey] = useState(
+    localStorage.getItem("accessKey") || ""
+  );
+
   // idle | loading | done | error
   const [status, setStatus] = useState("idle");
 
@@ -37,9 +42,12 @@ function App() {
     formData.append("resume", file);
     formData.append("job_description", jobDescription);
 
-      try {
+    try {
       const response = await fetch(`${API_URL}/api/analyze`, {
         method: "POST",
+        headers: {
+          "X-Access-Key": accessKey,
+        },
         body: formData,
       });
 
@@ -88,6 +96,19 @@ function App() {
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
             placeholder="Paste the full job posting here..."
+          />
+        </label>
+
+        <label>
+          Access key
+          <input
+            type="password"
+            value={accessKey}
+            onChange={(e) => {
+              setAccessKey(e.target.value);
+              localStorage.setItem("accessKey", e.target.value);
+            }}
+            placeholder="Ask Michael for the key"
           />
         </label>
 
