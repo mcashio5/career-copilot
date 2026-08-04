@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.PROD ? "" : "http://localhost:8000";
 
 function App() {
   // Data entered into the job-description box

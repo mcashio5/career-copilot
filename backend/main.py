@@ -1,5 +1,8 @@
+import os
+
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pypdf import PdfReader
 
 from ai import analyze
@@ -50,3 +53,6 @@ async def analyze_resume(
         )
 
     return analyze(resume_text, job_description)
+
+if os.path.isdir("static"):
+        app.mount("/", StaticFiles(directory="static", html=True), name="static")
