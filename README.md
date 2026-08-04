@@ -110,6 +110,8 @@ http://localhost:5173
 
 - **User-focused error handling:** Network failures, invalid PDFs, missing inputs, and oversized job descriptions return clear messages instead of exposing technical errors or stack traces.
 
+- **Authentication:** Analyze endpoint is gated by a shared access key (X-Access-Key header); per-user auth is on the roadmap.
+
 ## Roadmap
 
 - Deploy the application to a public cloud platform
