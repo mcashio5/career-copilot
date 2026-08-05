@@ -75,9 +75,7 @@ function App() {
   }
 
   if (page === "history") {
-    return (
-      <HistoryPage onBack={() => setPage("analyze")} accessKey={accessKey} />
-    );
+    return <HistoryPage onBack={() => setPage("analyze")} />;
   }
 
   return (
@@ -205,7 +203,7 @@ function Results({ data }) {
   );
 }
 
-function HistoryPage({ onBack, accessKey }) {
+function HistoryPage({ onBack }) {
   // loading | done | error
   const [status, setStatus] = useState("loading");
   const [history, setHistory] = useState([]);
@@ -214,9 +212,7 @@ function HistoryPage({ onBack, accessKey }) {
   useEffect(() => {
     async function loadHistory() {
       try {
-        const response = await fetch(`${API_URL}/api/history`, {
-          headers: { "X-Access-Key": accessKey },
-        });
+        const response = await fetch(`${API_URL}/api/history`);
 
         if (!response.ok) {
           const data = await response.json();
@@ -232,7 +228,7 @@ function HistoryPage({ onBack, accessKey }) {
     }
 
     loadHistory();
-  }, [accessKey]);
+  }, []);
 
   return (
     <main className="container">

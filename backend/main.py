@@ -71,8 +71,7 @@ async def analyze_resume(
 
 
 @app.get("/api/history")
-def history(x_access_key: str | None = Header(default=None)):
-    check_access(x_access_key)
+def history():
     return get_history()
 
 if os.path.isdir("static"):
