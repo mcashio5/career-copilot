@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 const API_URL = import.meta.env.PROD ? "" : "http://localhost:8000";
 
 function App() {
+  // analyze | history
+  const [page, setPage] = useState("analyze");
+
   // Data entered into the job-description box
   const [jobDescription, setJobDescription] = useState("");
 
@@ -71,6 +74,12 @@ function App() {
     }
   }
 
+  if (page === "history") {
+    return (
+      <HistoryPage onBack={() => setPage("analyze")} accessKey={accessKey} />
+    );
+  }
+
   return (
     <main className="container">
       <h1>Career Copilot</h1>
@@ -78,6 +87,14 @@ function App() {
       <p className="tagline">
         Upload a resume, paste a job posting, get a plan.
       </p>
+
+      <button
+        type="button"
+        className="nav-button"
+        onClick={() => setPage("history")}
+      >
+        History
+      </button>
 
       <form onSubmit={handleSubmit}>
         <label>
@@ -138,6 +155,9 @@ function Results({ data }) {
     <section className="results">
       <h2>Analysis Results</h2>
 
+      <h3>Job Title</h3>
+      <p>{data.job_title}</p>
+
       <h3>Match Score</h3>
       <p>{data.match_score}/100</p>
 
@@ -182,6 +202,83 @@ function Results({ data }) {
         ))}
       </ol>
     </section>
+  );
+}
+
+function HistoryPage({ onBack, accessKey }) {
+  // loading | done | error
+  const [status, setStatus] = useState("loading");
+  const [history, setHistory] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadHistory() {
+      try {
+        const response = await fetch(`${API_URL}/api/history`, {
+          headers: { "X-Access-Key": accessKey },
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.detail ?? "Couldn't load history.");
+        }
+
+        setHistory(await response.json());
+        setStatus("done");
+      } catch (err) {
+        setError(err.message || "Couldn't load history.");
+        setStatus("error");
+      }
+    }
+
+    loadHistory();
+  }, [accessKey]);
+
+  return (
+    <main className="container">
+      <h1>History</h1>
+
+      <p className="tagline">Past analyses, most recent first.</p>
+
+      <button type="button" className="nav-button" onClick={onBack}>
+        Back to Analyzer
+      </button>
+
+      {status === "loading" && <p className="tagline">Loading…</p>}
+
+      {status === "error" && <p className="error">{error}</p>}
+
+      {status === "done" && history.length === 0 && (
+        <p className="tagline">No analyses yet.</p>
+      )}
+
+      {status === "done" && history.length > 0 && (
+        <section className="results">
+          <table className="history-table">
+            <thead>
+              <tr>
+                <th>Job Title</th>
+                <th>Date</th>
+                <th>Match Score</th>
+                <th>Top Matching Skill</th>
+                <th>Top Missing Skill</th>
+              </tr>
+            </thead>
+            <tbody>
+              {history.map((entry) => (
+                <tr key={entry.id}>
+                  <td>{entry.job_title}</td>
+                  <td>{new Date(entry.created_at).toLocaleDateString()}</td>
+                  <td>{entry.match_score}/100</td>
+                  <td>{entry.top_matching_skill}</td>
+                  <td>{entry.top_missing_skill}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
+    </main>
   );
 }
 

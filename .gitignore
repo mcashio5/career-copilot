@@ -3,4 +3,6 @@ venv/
 __pycache__/
 node_modules/
 dist/
-.DS_Storebackend/static/
+.DS_Store
+backend/static/
+backend/data/

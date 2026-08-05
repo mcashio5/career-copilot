@@ -195,6 +195,57 @@ button[type="submit"]:disabled {
   cursor: wait;
 }
 
+.nav-button {
+  display: block;
+  margin: 0 auto 24px;
+  padding: 10px 20px;
+
+  color: var(--text-main);
+  font-weight: 700;
+
+  background: var(--accent-soft);
+  border: 1px solid rgba(124, 92, 255, 0.45);
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition:
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.nav-button:hover {
+  background: rgba(124, 92, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+  padding: 12px 14px;
+  text-align: left;
+  color: #d7deeb;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.history-table th {
+  color: #c4b5fd;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.history-table tbody tr:hover {
+  background: rgba(124, 92, 255, 0.06);
+}
+
+.history-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .error {
   margin: 22px 0 0;
   padding: 16px 18px;

@@ -27,7 +27,8 @@ Rules:
   behavioral, and reflect what THIS employer would plausibly ask.
 - The cover letter uses only real facts from the resume, in a confident,
   concise voice. No filler phrases.
-- The study plan orders topics by interview impact: what to learn first."""
+- The study plan orders topics by interview impact: what to learn first.
+- top_matching_skill and top_missing_skill are each a single skill, not a list."""
 
 
 def analyze(resume_text: str, job_description: str) -> AnalysisResult:

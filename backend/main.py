@@ -7,9 +7,11 @@ from fastapi.staticfiles import StaticFiles
 from pypdf import PdfReader
 
 from ai import analyze
+from db import get_history, init_db, save_analysis
 from models import AnalysisResult
 
 app = FastAPI(title="Career Copilot API")
+init_db()
 
 app.add_middleware(
     CORSMiddleware,
@@ -63,7 +65,15 @@ async def analyze_resume(
             detail="Job description is too long.",
         )
 
-    return analyze(resume_text, job_description)
+    result = analyze(resume_text, job_description)
+    save_analysis(result)
+    return result
+
+
+@app.get("/api/history")
+def history(x_access_key: str | None = Header(default=None)):
+    check_access(x_access_key)
+    return get_history()
 
 if os.path.isdir("static"):
     app.mount("/", StaticFiles(directory="static", html=True), name="static")
